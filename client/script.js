@@ -10,7 +10,7 @@
 */
 
 // CODE HERE
-
+const sayHelloButton = document.querySelector("#say-hello-button");
 
 // PROBLEM 2
 /*
@@ -20,8 +20,11 @@
 */
 
 // CODE HERE
-
-
+const helloButtonColor = (event) => {
+  sayHelloButton.style.backgroundColor = "#000000";
+  sayHelloButton.style.color = "#FFFFFF";
+};
+sayHelloButton.addEventListener("mouseover", helloButtonColor);
 // PROBLEM 3
 /*
     Now you can see that the button colors change, but they do not change back when we take the mouse off of the button.
@@ -32,8 +35,11 @@
 */
 
 // CODE HERE
-
-
+const helloButtonReturnColor = (event) => {
+  sayHelloButton.style.backgroundColor = "#EFEFEF";
+  sayHelloButton.style.color = "black";
+};
+sayHelloButton.addEventListener("mouseout", helloButtonReturnColor);
 // PROBLEM 4
 /*
     Now lets see if we can make a request to our server when we click the button
@@ -43,19 +49,18 @@
 
 // DO NOT EDIT FUNCTION
 const sayHello = () => {
-    axios.get('http://localhost:3000/say-hello').then((res) => {
-        let helloText = document.getElementById('hello-text');
-        helloText.style.display = 'block';
-        helloText.style.backgroundColor = 'green';
-        helloText.textContent = res.data;
-    })
-}
+  axios.get("http://localhost:3000/say-hello").then((res) => {
+    let helloText = document.getElementById("hello-text");
+    helloText.style.display = "block";
+    helloText.style.backgroundColor = "green";
+    helloText.textContent = res.data;
+  });
+};
 // DO NOT EDIT FUNCTION
 
 // CODE HERE
-
-
-// PROBLEM 5 
+sayHelloButton.addEventListener("click", sayHello);
+// PROBLEM 5
 /*
     Now that we have attached a few event listeners why dont we try adding a request? 
     
@@ -64,16 +69,22 @@ const sayHello = () => {
     Use axios inside the ohMy function to make a GET request to 'http://localhost:3000/animals' 
     
     Handle the promise that's returned with a .then, which you should pass a callback function to. Inside the callback function, console.log the response's data (in the intermediate instructions we'll come back to this function and add HTML).
-*/ 
+*/
 
 const ohMy = () => {
-    // YOUR CODE HERE
-}
+  // YOUR CODE HERE
+  axios.get("http://localhost:3000/animals").then((res) => {
+    for (let str of res.data) {
+      newPar = document.createElement("p");
+      newPar.textContent = str;
+      document.querySelector("body").appendChild(newPar);
+    }
+  });
+};
 
-document.getElementById('animals-button').addEventListener('click', ohMy)
+document.getElementById("animals-button").addEventListener("click", ohMy);
 
-
-// PROBLEM 6 
+// PROBLEM 6
 /*
     Now lets see if you can send a request param! inside repeatMyParam function below  make get request to 'http://localhost:3000/repeat/{SOMEPARAM}', but with a string instead of {SOMEPARAM}.  
 
@@ -87,8 +98,17 @@ document.getElementById('animals-button').addEventListener('click', ohMy)
 */
 
 const repeatMyParam = () => {
-    //YOUR CODE HERE
-}
+  //YOUR CODE HERE
+  axios.get("http://localhost:3000/repeat/repeater").then((res) => {
+    console.log(res.data);
+    document.querySelector("#repeat-text").textContent = res.data;
+  });
+
+  document.querySelector("#repeat-text").style.display = "block";
+};
+document
+  .querySelector("#repeat-button")
+  .addEventListener("click", repeatMyParam);
 
 // PROBLEM 7
 /*
@@ -98,8 +118,6 @@ const repeatMyParam = () => {
 */
 
 // Code in the repeatMyParam function above
-
-
 
 // PROBLEM 8
 /*
@@ -111,9 +129,20 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE
-
-
-
+const queryTester = () => {
+  axios.get("http://localhost:3000/query-test/?color=Red").then((res) => {
+    console.log(res.data);
+  });
+  axios.get("http://localhost:3000/query-test/").then((res) => {
+    console.log(res.data);
+  });
+  axios
+    .get("http://localhost:3000/query-test/?color=red&name=John")
+    .then((res) => {
+      console.log(res.data);
+    });
+};
+document.querySelector("#query-button").addEventListener("click", queryTester);
 ////////////////
 //INTERMEDIATE//
 ////////////////
@@ -127,7 +156,7 @@ const repeatMyParam = () => {
 
 // Code in the ohMy function in Problem 5
 
-// PROBLEM 10 
+// PROBLEM 10
 /*
     In the function that you wrote for Problem 8, change the URL to test a couple different scenarios. 
 
@@ -137,8 +166,6 @@ const repeatMyParam = () => {
 */
 
 // Edit code in Problem 8
-
-
 
 ////////////
 //ADVANCED//
@@ -163,4 +190,4 @@ const repeatMyParam = () => {
     Based on what we did earlier to display this type of data, write code that will display the response in your HTML document. 
 */
 
-// CODE HERE 
+// CODE HERE
